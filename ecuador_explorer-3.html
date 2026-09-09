@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Ecuador Explorer: descubre los destinos turísticos de las cuatro regiones naturales del Ecuador.">
+  <title>Ecuador Explorer | Destinos turísticos</title>
+
+  <style>
+    :root{
+      --azul:#123b70;
+      --azul2:#1d5fa7;
+      --amarillo:#f7c928;
+      --verde:#21865a;
+      --texto:#17324d;
+      --claro:#f5f8fb;
+      --blanco:#ffffff;
+      --sombra:0 10px 30px rgba(18,59,112,.12);
+    }
+
+    *{box-sizing:border-box;scroll-behavior:smooth}
+
+    body{
+      margin:0;
+      font-family:Arial, Helvetica, sans-serif;
+      color:var(--texto);
+      background:var(--claro);
+      line-height:1.6;
+    }
+
+    header{
+      background:linear-gradient(135deg,#082d5c,#1768a9);
+      color:white;
+      text-align:center;
+      padding:70px 20px 55px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    header::after{
+      content:"";
+      position:absolute;
+      width:360px;
+      height:360px;
+      border-radius:50%;
+      background:rgba(247,201,40,.12);
+      right:-120px;
+      top:-150px;
+    }
+
+    .logo{
+      font-size:clamp(2.2rem,7vw,4.5rem);
+      margin:0;
+      font-weight:900;
+      letter-spacing:1px;
+    }
+
+    .subtitulo{
+      margin:10px auto 0;
+      max-width:750px;
+      font-size:1.15rem;
+      color:#fff9d5;
+    }
+
+    nav{
+      position:sticky;
+      top:0;
+      z-index:10;
+      background:var(--amarillo);
+      box-shadow:0 4px 15px rgba(0,0,0,.12);
+    }
+
+    nav ul{
+      margin:0;
+      padding:0;
+      list-style:none;
+      display:flex;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+
+    nav a{
+      display:block;
+      padding:14px 18px;
+      color:#142c42;
+      text-decoration:none;
+      font-weight:800;
+      transition:.2s;
+    }
+
+    nav a:hover{
+      background:#fff4a8;
+      transform:translateY(-1px);
+    }
+
+    .hero{
+      min-height:430px;
+      display:grid;
+      place-items:center;
+      text-align:center;
+      padding:50px 20px;
+      background:
+        linear-gradient(rgba(4,35,69,.52),rgba(4,35,69,.58)),
+        linear-gradient(135deg,#1479a8 0%,#0d4f85 38%,#197b55 70%,#f2c531 100%);
+      color:white;
+    }
+
+    .hero-box{
+      max-width:850px;
+    }
+
+    .hero h2{
+      font-size:clamp(2rem,5vw,3.4rem);
+      margin:0 0 15px;
+    }
+
+    .hero p{
+      font-size:1.15rem;
+      margin:0 auto 25px;
+      max-width:720px;
+    }
+
+    .boton{
+      display:inline-block;
+      background:var(--amarillo);
+      color:#172b3e;
+      padding:13px 22px;
+      border-radius:30px;
+      text-decoration:none;
+      font-weight:900;
+      margin:5px;
+      transition:.2s;
+    }
+
+    .boton:hover{
+      transform:translateY(-3px);
+      box-shadow:0 8px 20px rgba(0,0,0,.18);
+    }
+
+    main{
+      max-width:1150px;
+      margin:auto;
+      padding:55px 20px;
+    }
+
+    .titulo-seccion{
+      text-align:center;
+      margin-bottom:35px;
+    }
+
+    .titulo-seccion h2{
+      margin:0 0 8px;
+      font-size:2.2rem;
+      color:var(--azul);
+    }
+
+    .titulo-seccion p{
+      margin:0 auto;
+      max-width:700px;
+      color:#52697d;
+    }
+
+    .regiones{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:18px;
+      margin-bottom:65px;
+    }
+
+    .region{
+      background:white;
+      border-radius:18px;
+      padding:25px 18px;
+      text-align:center;
+      box-shadow:var(--sombra);
+      text-decoration:none;
+      color:var(--texto);
+      transition:.25s;
+      border-top:6px solid var(--amarillo);
+    }
+
+    .region:hover{
+      transform:translateY(-7px);
+    }
+
+    .region .emoji{
+      font-size:3rem;
+    }
+
+    .region h3{
+      margin:8px 0 5px;
+      color:var(--azul);
+    }
+
+    .region p{
+      margin:0;
+      font-size:.95rem;
+    }
+
+    .destino{
+      margin:55px 0;
+      scroll-margin-top:85px;
+    }
+
+    .destino-cabecera{
+      color:white;
+      border-radius:20px 20px 0 0;
+      padding:28px;
+      background:linear-gradient(135deg,var(--azul),var(--azul2));
+    }
+
+    .destino-cabecera.costa{background:linear-gradient(135deg,#007a9e,#0a9d86)}
+    .destino-cabecera.sierra{background:linear-gradient(135deg,#345b89,#6f4e37)}
+    .destino-cabecera.amazonia{background:linear-gradient(135deg,#12633d,#29915d)}
+    .destino-cabecera.insular{background:linear-gradient(135deg,#126f8d,#2a9fbd)}
+
+    .destino-cabecera h2{
+      margin:0;
+      font-size:2rem;
+    }
+
+    .destino-cabecera p{
+      margin:5px 0 0;
+    }
+
+    .tarjetas{
+      background:white;
+      padding:25px;
+      border-radius:0 0 20px 20px;
+      box-shadow:var(--sombra);
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:18px;
+    }
+
+    .tarjeta{
+      border:1px solid #e3eaf0;
+      border-radius:15px;
+      overflow:hidden;
+      background:#fff;
+      transition:.2s;
+    }
+
+    .tarjeta:hover{
+      transform:translateY(-4px);
+      box-shadow:0 8px 20px rgba(18,59,112,.1);
+    }
+
+    .foto{
+      height:155px;
+      display:grid;
+      place-items:center;
+      font-size:4rem;
+      background:linear-gradient(135deg,#d9eff5,#8ac8d8);
+    }
+
+    .foto.sierra{background:linear-gradient(135deg,#dce8ee,#a9b6c5)}
+    .foto.amazonas{background:linear-gradient(135deg,#d9f2d8,#79bd81)}
+    .foto.insular{background:linear-gradient(135deg,#d7f4fa,#78cbdc)}
+
+    .contenido{
+      padding:18px;
+    }
+
+    .contenido h3{
+      margin:0 0 6px;
+      color:var(--azul);
+    }
+
+    .contenido p{
+      margin:6px 0;
+      font-size:.94rem;
+    }
+
+    .etiqueta{
+      display:inline-block;
+      margin-top:8px;
+      padding:5px 9px;
+      border-radius:15px;
+      background:#eef5fa;
+      font-size:.8rem;
+      font-weight:bold;
+    }
+
+    .info{
+      background:white;
+      padding:35px;
+      border-radius:20px;
+      box-shadow:var(--sombra);
+      margin-top:50px;
+    }
+
+    .info h2{
+      color:var(--azul);
+      margin-top:0;
+    }
+
+    footer{
+      background:#082d5c;
+      color:white;
+      text-align:center;
+      padding:35px 20px;
+      margin-top:30px;
+    }
+
+    footer p{margin:6px}
+
+    @media(max-width:850px){
+      .regiones{grid-template-columns:repeat(2,1fr)}
+      .tarjetas{grid-template-columns:repeat(2,1fr)}
+    }
+
+    @media(max-width:600px){
+      nav a{padding:11px 10px;font-size:.88rem}
+      .hero{min-height:390px}
+      .regiones,.tarjetas{grid-template-columns:1fr}
+      main{padding:40px 15px}
+      .tarjetas{padding:15px}
+      .destino-cabecera{padding:23px}
+    }
+  </style>
+</head>
+
+<body>
+
+  <header id="inicio">
+    <h1 class="logo">ECUADOR EXPLORER</h1>
+    <p class="subtitulo">
+      Descubre las 4 regiones naturales del Ecuador: Costa, Sierra, Amazonía e Insular.
+    </p>
+  </header>
+
+  <nav>
+    <ul>
+      <li><a href="#inicio">INICIO</a></li>
+      <li><a href="#costa">COSTA</a></li>
+      <li><a href="#sierra">SIERRA</a></li>
+      <li><a href="#amazonia">AMAZONÍA</a></li>
+      <li><a href="#insular">INSULAR</a></li>
+    </ul>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-box">
+      <h2>Explora Ecuador 🇪🇨</h2>
+      <p>
+        Un país pequeño en territorio, pero enorme en paisajes, cultura y biodiversidad.
+        Recorre sus cuatro regiones y descubre destinos que hacen único al Ecuador.
+      </p>
+      <a class="boton" href="#regiones">Comenzar exploración</a>
+    </div>
+  </section>
+
+  <main>
+
+    <section id="regiones">
+      <div class="titulo-seccion">
+        <h2>Las 4 regiones del Ecuador</h2>
+        <p>Selecciona una región y descubre algunos de sus destinos turísticos más representativos.</p>
+      </div>
+
+      <div class="regiones">
+        <a class="region" href="#costa">
+          <div class="emoji">🌊</div>
+          <h3>Costa</h3>
+          <p>Playas, manglares, gastronomía y naturaleza.</p>
+        </a>
+
+        <a class="region" href="#sierra">
+          <div class="emoji">⛰️</div>
+          <h3>Sierra</h3>
+          <p>Volcanes, lagunas, cultura y ciudades históricas.</p>
+        </a>
+
+        <a class="region" href="#amazonia">
+          <div class="emoji">🌿</div>
+          <h3>Amazonía</h3>
+          <p>Selva, ríos y una extraordinaria biodiversidad.</p>
+        </a>
+
+        <a class="region" href="#insular">
+          <div class="emoji">🐢</div>
+          <h3>Insular</h3>
+          <p>Galápagos, fauna única y paisajes volcánicos.</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="destino" id="costa">
+      <div class="destino-cabecera costa">
+        <h2>🌊 Región Costa</h2>
+        <p>Sol, mar, naturaleza y una cultura llena de sabor.</p>
+      </div>
+
+      <div class="tarjetas">
+        <article class="tarjeta">
+          <div class="foto">🏖️</div>
+          <div class="contenido">
+            <h3>Montañita</h3>
+            <p>Destino costero conocido por su playa, ambiente turístico y actividades relacionadas con el mar.</p>
+            <span class="etiqueta">Playa · Surf</span>
+          </div>
+        </article>
+
+        <article class="tarjeta">
+          <div class="foto">🌴</div>
+          <div class="contenido">
+            <h3>Puerto López</h3>
+            <p>Un punto de partida para conocer paisajes costeros y áreas naturales de gran importancia.</p>
+            <span class="etiqueta">Naturaleza · Mar</span>
+          </div>
+        </article>
+
+        <article class="tarjeta">
+          <div class="foto">🌊</div>
+          <div class="contenido">
+            <h3>Salinas</h3>
+            <p>Uno de los destinos de playa más conocidos del Ecuador, ideal para disfrutar del paisaje costero.</p>
+            <span class="etiqueta">Playa · Turismo</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="destino" id="sierra">
+      <div class="destino-cabecera sierra">
+        <h2>⛰️ Región Sierra</h2>
+        <p>La cordillera de los Andes reúne volcanes, lagunas y patrimonio cultural.</p>
+      </div>
+
+      <div class="tarjetas">
+        <article class="tarjeta">
+          <div class="foto sierra">🏙️</div>
+          <div class="contenido">
+            <h3>Quito</h3>
+            <p>La capital del Ecuador combina arquitectura histórica, cultura y paisajes andinos.</p>
+            <span class="etiqueta">Cultura · Historia</span>
+          </div>
+        </article>
+
+        <article class="tarjeta">
+          <div class="foto sierra">🌋</div>
+          <div class="contenido">
+            <h3>Baños de Agua Santa</h3>
+            <p>Destino rodeado de montañas y cascadas, famoso por sus actividades de aventura.</p>
+            <span class="etiqueta">Aventura · Naturaleza</span>
+          </div>
+        </article>
+
+        <article class="tarjeta">
+          <div class="foto sierra">🏔️</div>
+          <div class="contenido">
+            <h3>Cotopaxi</h3>
+            <p>El volcán Cotopaxi es uno de los paisajes naturales más emblemáticos de los Andes ecuatorianos.</p>
+            <span class="etiqueta">Volcán · Paisaje</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="destino" id="amazonia">
+      <div class="destino-cabecera amazonia">
+        <h2>🌿 Región Amazónica</h2>
+        <p>Una región de bosques, ríos y una de las mayores riquezas naturales del planeta.</p>
+      </div>
+
+      <div class="tarjetas">
+        <article class="tarjeta">
+          <div class="foto amazonas">🌳</div>
+          <div class="contenido">
+            <h3>Tena</h3>
+            <p>Conocida por sus paisajes amazónicos, ríos y actividades de naturaleza y aventura.</p>
+            <span class="etiqueta">Amazonía · Aventura</span>
+          </div>
+        </article>
+
+        <article class="tarjeta">
+          <div class="foto amazonas">🦜</div>
+          <div class="contenido">
+            <h3>Cuyabeno</h3>
+            <p>Área natural con ecosistemas amazónicos y una gran diversidad de flora y fauna.</p>
+            <span class="etiqueta">Biodiversidad · Naturaleza</span>
+          </div>
+        </article>
+
+        <article class="tarjeta">
+          <div class="foto amazonas">🐒</div>
+          <div class="contenido">
+            <h3>Yasuní</h3>
+            <p>Una de las zonas de mayor biodiversidad del Ecuador, de enorme importancia ecológica.</p>
+            <span class="etiqueta">Biodiversidad · Selva</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="destino" id="insular">
+      <div class="destino-cabecera insular">
+        <h2>🐢 Región Insular</h2>
+        <p>Las islas Galápagos destacan por sus especies únicas y sus paisajes volcánicos.</p>
+      </div>
+
+      <div class="tarjetas">
+        <article class="tarjeta">
+          <div class="foto insular">🐢</div>
+          <div class="contenido">
+            <h3>Santa Cruz</h3>
+            <p>Una de las islas más visitadas del archipiélago y un importante punto turístico de Galápagos.</p>
+            <span class="etiqueta">Fauna · Islas</span>
+          </div>
+        </article>
+
+        <article class="tarjeta">
+          <div class="foto insular">🌋</div>
+          <div class="contenido">
+            <h3>Isabela</h3>
+            <p>La isla más grande del archipiélago, con volcanes, playas y ecosistemas muy diversos.</p>
+            <span class="etiqueta">Volcanes · Naturaleza</span>
+          </div>
+        </article>
+
+        <article class="tarjeta">
+          <div class="foto insular">🦎</div>
+          <div class="contenido">
+            <h3>San Cristóbal</h3>
+            <p>Una isla con paisajes naturales, fauna característica y lugares de interés turístico.</p>
+            <span class="etiqueta">Fauna · Turismo</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="info">
+      <h2>🌎 ¿Por qué visitar Ecuador?</h2>
+      <p>
+        Ecuador reúne una enorme variedad de paisajes en un territorio relativamente pequeño.
+        Sus cuatro regiones naturales ofrecen experiencias diferentes: playas en la Costa,
+        montañas y volcanes en la Sierra, bosques y ríos en la Amazonía, y ecosistemas únicos
+        en la región Insular.
+      </p>
+      <p>
+        <strong>Ecuador Explorer</strong> tiene como objetivo mostrar esta diversidad y
+        despertar el interés por conocer, valorar y conservar los destinos turísticos del país.
+      </p>
+    </section>
+
+  </main>
+
+  <footer>
+    <p><strong>ECUADOR EXPLORER 🇪🇨</strong></p>
+    <p>Descubre · Explora · Conoce Ecuador</p>
+    <p>Proyecto educativo sobre destinos turísticos del Ecuador.</p>
+  </footer>
+
+</body>
+</html>
